@@ -1,0 +1,68 @@
+import * as React from 'react';
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+
+// CarItem Component
+const CarItem = ({ car, onPress }) => {
+    return (
+        <TouchableOpacity style={styles.carItem} onPress={onPress}>
+            <Image
+                style={styles.carImage}
+                source={{ uri: car.img }} // Assuming car.img now contains a URL
+            />
+            <View style={styles.carInfo}>
+                <Text style={styles.carName}>{car.name}</Text>
+                <View style={styles.carDetails}>
+                    <Icon name="users" size={15} color="#A43333" style={styles.icon} />
+                    <Text style={styles.detailText}>{car.seat}</Text>
+                    <Icon name="briefcase" size={15} color="#A43333" style={styles.icon} />
+                    <Text style={styles.detailText}>{car.baggage}</Text>
+                </View>
+                <Text style={styles.carPrice}>{car.price}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+};
+
+export default CarItem;
+
+// Styles for CarItem
+const styles = StyleSheet.create({
+    carItem: {
+        flexDirection: 'row',
+        padding: 10,
+        backgroundColor: '#F5F5F5',
+        borderRadius: 10,
+        marginBottom: 10,
+    },
+    carImage: {
+        width: 60,
+        height: 60,
+        resizeMode: 'contain',
+    },
+    carInfo: {
+        flex: 1,
+        paddingLeft: 10,
+    },
+    carName: {
+        fontFamily: 'Poppins-Regular',
+        fontSize: 14,
+    },
+    carDetails: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 5,
+    },
+    icon: {
+        marginRight: 5,
+    },
+    detailText: {
+        marginRight: 15, // Adjust spacing between each icon/text pair
+    },
+    carPrice: {
+        fontFamily: 'Poppins-reguler',
+        fontSize: 14,
+        color: '#4CAF50',
+        marginTop: 5,
+    },
+});

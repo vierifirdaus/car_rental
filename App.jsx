@@ -7,6 +7,8 @@ import { configureFonts, MD3LightTheme, PaperProvider } from 'react-native-paper
 import Login from './src/screens/Login';
 import Register from './src/screens/Register';
 import Home from './src/screens/Home';
+import List from './src/screens/List';
+import CarDetail from './src/screens/CarDetail';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,11 +26,11 @@ function Tabs(){
       />
       <Tab.Screen 
         options={{
-          title: 'Daftar Mobil',
+          headerShown: false,
           tabBarIcon: () => <Icon name={"list"} size={25} color="#A43333" />
         }} 
         name="List" 
-        component={Home} 
+        component={List} 
       />
       <Tab.Screen 
         options={{
@@ -76,6 +78,13 @@ export default function App() {
                       }} 
                       name="Home" 
                       component={Home} 
+                    />
+                    <Stack.Screen
+                      options={{
+                        headerShown:false
+                      }} 
+                      name="CarDetail" 
+                      component={CarDetail} 
                     />
                 </Stack.Navigator>
             </NavigationContainer>
