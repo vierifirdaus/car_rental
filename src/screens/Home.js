@@ -1,19 +1,31 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Text, View, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Button, Text, View, Image, StyleSheet,SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import CarItem from '../components/CarItem';  
 import Icon from 'react-native-vector-icons/Feather';
 import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { selectUser } from '../redux/reducers/user';
+import { useSelector } from 'react-redux';
 
 export default function Home({ navigation }) {
   const [cars, setCars] = useState([]);
+  const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(false);
-
+  const getUserUsingRedux = useSelector(selectUser);
+  const getUser = async () => {
+    try {
+      setUser(getUserUsingRedux.data)
+    } catch (e) {
+      console.log(e);
+      setUser(null);
+    }
+  }
   const fetchCars = async () => {
     setIsLoading(true);
     await axios
         .get('http://192.168.1.22:3000/api/v1/cars')
         .then((res) => {
-            console.log(res.data.data);
             setCars(res.data.data);
         })
     setIsLoading(false);
@@ -22,7 +34,14 @@ export default function Home({ navigation }) {
   useEffect(() => {
     fetchCars();
   }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      getUser()
+      return () => {
+        setUser(null)
+      };
+    }, [])
+  )
   const buttonItems = [
     { type: "Sewa Mobil", icon: 'truck' },
     { type: "Oleh-Oleh", icon: 'box' },
@@ -31,69 +50,64 @@ export default function Home({ navigation }) {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.greeting}>Hi, Nama</Text>
-          <Text style={styles.location}>Your Location</Text>
-        </View>
-        <Image style={styles.profileImage} source={require('../assets/picture/Profile.png')} />
-      </View>
-
-      {/* Banner Section */}
-      <View style={styles.banner}>
-        <View style={styles.bannerText}>
-          <Text style={styles.bannerTitle}>Sewa Mobil Berkualitas di kawasanmu</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Sewa Mobil</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Car Image */}
-      <View style={styles.viewZenix}>
-        <Image style={styles.zenix} source={require('../assets/picture/zenix.png')} />
-      </View>
-
-      {/* Category Icons */}
-      <View style={styles.categoryContainer}>
-        {buttonItems.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.category}>
-            <View style={styles.iconWrapper}>
-              <Icon name={item.icon} size={20} color="white" />
+    <SafeAreaView>
+      <FlatList
+        style={styles.container}
+        data = {cars}
+        ListHeaderComponent={
+          <>
+            {/* Header Section */}
+            <View style={styles.header}>
+              <View>
+                <Text style={styles.greeting}>Hi, {user ? user.fullname : 'Guest'}</Text>
+                <Text style={styles.location}>Your Location</Text>
+              </View>
+              <Image style={styles.profileImage} source={require('../assets/picture/Profile.png')} />
             </View>
-            <Text style={styles.categoryText}>{item.type}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
 
-      {/* Car List */}
-      <Text style={styles.sectionTitle}>Daftar Mobil Pilihan</Text>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <View style={styles.carList}>
-          {cars.length > 0 ? (
-            cars.map((car, index) => (
-              <CarItem
-                key={car.id} 
-                car={car}
-                onPress={() => navigation.navigate('CarDetail', { id: car.id })}
-              />
-            ))
-          ) : (
-            <Text>No cars found.</Text>
-          )}
-        </View>
-      )}
-    </ScrollView>
+            {/* Banner Section */}
+            <View style={styles.banner}>
+              <View style={styles.bannerText}>
+                <Text style={styles.bannerTitle}>Sewa Mobil Berkualitas di kawasanmu</Text>
+                <TouchableOpacity style={styles.button}>
+                  <Text style={styles.buttonText}>Sewa Mobil</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Car Image */}
+            <View style={styles.viewZenix}>
+              <Image style={styles.zenix} source={require('../assets/picture/zenix.png')} />
+            </View>
+
+            {/* Category Icons */}
+            <View style={styles.categoryContainer}>
+              {buttonItems.map((item, index) => (
+                <TouchableOpacity key={index} style={styles.category}>
+                  <View style={styles.iconWrapper}>
+                    <Icon name={item.icon} size={20} color="white" />
+                  </View>
+                  <Text style={styles.categoryText}>{item.type}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
+        }
+        renderItem={({item,index}) => 
+          <CarItem 
+            key={index}
+            car={item}
+            onPress={() => navigation.navigate('CarDetail', { id: item.id })}
+          />
+        }
+        keyExtractor={(item) => item.id}
+      />
+    </SafeAreaView>
   );
 }
 // Styles
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#FFFFFF',
     },
     header: {

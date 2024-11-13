@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-
+function formatIDR(price) {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price);
+}
 // CarItem Component
 const CarItem = ({ car, onPress }) => {
     return (
@@ -18,7 +20,7 @@ const CarItem = ({ car, onPress }) => {
                     <Icon name="briefcase" size={15} color="#A43333" style={styles.icon} />
                     <Text style={styles.detailText}>{car.baggage}</Text>
                 </View>
-                <Text style={styles.carPrice}>{car.price}</Text>
+                <Text style={styles.carPrice}>{formatIDR(car.price)}</Text>
             </View>
         </TouchableOpacity>
     );

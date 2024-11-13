@@ -1,27 +1,26 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button, Text, View, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import CarItem from '../components/CarItem';  // Adjust path if needed
-import Icon from 'react-native-vector-icons/Feather';
+import axios from 'axios';
 // Home Screen Component
 export default function List({ navigation }) {
     const [cars, setCars] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const getCars = async () => {
+    const fetchCars = async () => {
+        setIsLoading(true);
         await axios
             .get('http://192.168.1.22:3000/api/v1/cars')
             .then((res) => {
-                console.log("ini data di listtt",res.data.data);
+                console.log(res.data.data);
                 setCars(res.data.data);
             })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
-    useEffect(() => {
-        getCars();
-    }, []);
+        setIsLoading(false);
+      };
+    
+      useEffect(() => {
+        fetchCars();
+      }, []);
 
     return (
         <ScrollView style={styles.container}>
@@ -37,9 +36,7 @@ export default function List({ navigation }) {
                         <CarItem
                             key={car.id}
                             car={car}
-                            onPress={() => {
-                                console.log(`Pressed on ${car.name}`);
-                            }}
+                            onPress={() => navigation.navigate('CarDetail', { id: car.id })}
                         />
                     ))
                 }
@@ -53,6 +50,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFFFFF',
+        paddingTop:15,
     },
     header: {
         flexDirection: 'row',
@@ -142,7 +140,7 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
         marginHorizontal: 20,
         marginVertical: 10,
     },

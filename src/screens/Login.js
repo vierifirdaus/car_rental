@@ -1,47 +1,23 @@
 //make login in jsx
-import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TextInput } from 'react-native-paper';
 import { configureFonts, MD3LightTheme } from 'react-native-paper';
 import { Link, useNavigation } from '@react-navigation/native';
 import Button from '../components/Button';
 import axios from 'axios'; 
-const fontConfig = {
-  default: {
-    regular: {
-      fontFamily: 'Poppins-Regular',
-      fontWeight: 'normal',
-    },
-    medium: {
-      fontFamily: 'Poppins-Medium',
-      fontWeight: 'normal',
-    },
-    light: {
-      fontFamily: 'Poppins-Light',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'Poppins-Thin',
-      fontWeight: 'normal',
-    },
-  },
-};
-
-const theme = {
-  ...MD3LightTheme,
-  roundness: 2,
-  fonts: configureFonts(fontConfig),
-  colors: {
-    ...MD3LightTheme.colors,
-    primary: '#A43333',
-    accent: '#AF392F',
-    tertiary: '#3D7B3F',
-  },
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { postLogin, selectUser } from '../redux/reducers/user';
 
 // Login Screen Component
 export default function Login() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -51,26 +27,31 @@ export default function Login() {
       password 
     };
 
-    try {
-      const res = await axios.post(
-        "http://192.168.1.22:3000/api/v1/auth/signin",
-        JSON.stringify(formData),
-        {
-          headers: {
-            "Content-Type": 'application/json'
-          }
-        }
-      );
-      console.log(res.data);
-    } catch (e) {
-      console.log(e);
-    }
+    await dispatch(postLogin(formData));
   };
+
+  useEffect(()=>{
+    if(user.status === 'success'){
+      console.log("berhasil berhasil ")
+      console.log(user)
+      setModalVisible(true);
+      setErrorMessage(null);
+      setTimeout(() => {
+        navigation.navigate('HomeTabs', { screen: 'Profil' });
+      }, 1000);
+    }
+    else if(user.status === 'failed'){
+      setModalVisible(true);
+      setErrorMessage(user.message);
+    }
+  }, [navigation, user]);
   return (
     <View>
       <View style={styles.imageWrapper}>
         <Image source={require('../assets/picture/ToyotaLogo.png')} />
-        <Link screen="Home"><Image source={require('../assets/picture/X.png')} /></Link>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeTabs')}>
+            <Image source={require('../assets/picture/X.png')} style={{ width: 20, height: 20 }} />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.inputWrapper}>

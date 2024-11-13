@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { Link } from '@react-navigation/native';
 import axios from 'axios'; // Make sure axios is installed and imported
 import Button from '../components/Button';
 
-export default function Register() {
+export default function Register({navigation}) {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,9 +33,9 @@ export default function Register() {
     <View>
       <View style={styles.imageWrapper}>
         <Image source={require('../assets/picture/ToyotaLogo.png')} />
-        <Link screen="Home">
-          <Image source={require('../assets/picture/X.png')} />
-        </Link>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeTabs')}>
+            <Image source={require('../assets/picture/X.png')} style={{ width: 20, height: 20 }} />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.inputWrapper}>
