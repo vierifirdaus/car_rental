@@ -164,12 +164,10 @@ const styles = StyleSheet.create({
     },
     viewZenix:{
         flexDirection: 'row-reverse',
+        marginTop: -150,
     },
     zenix:{
         floatImage: 'right',
-        justifyContent: 'right',
-        resizeMode: 'contain',
-        marginTop: -150,
     },
     bannerImage: {
         width: 80,
@@ -178,8 +176,7 @@ const styles = StyleSheet.create({
     },
     categoryContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginVertical: 10,
+        justifyContent: 'space-around'
     },
     category: {
         alignItems: 'center',

@@ -1,0 +1,21 @@
+
+            <ScrollView style={styles.container}>
+                
+
+                {/* Car List */}
+                <Text style={styles.sectionTitle}>Daftar Mobil Pilihan</Text>
+                <View style={styles.carList}>
+                    {
+                        isLoading ? (
+                            <Text>Loading...</Text>
+                        ) : cars.map((car, index) => (
+                            <CarItem
+                                key={car.id}
+                                car={car}
+                                onPress={() => navigation.navigate('CarDetail', { id: car.id })}
+                            />
+                        ))
+                    }
+                    
+                </View>
+            </ScrollView>

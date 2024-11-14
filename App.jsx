@@ -11,6 +11,7 @@ import Home from './src/screens/Home';
 import List from './src/screens/List';
 import CarDetail from './src/screens/CarDetail';
 import Profil from './src/screens/Profil';
+import Payment from './src/screens/Payment';
 import { persistor, store } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -96,6 +97,13 @@ export default function App() {
                 }} 
                 name="CarDetail" 
                 component={CarDetail} 
+              />
+              <Stack.Screen
+                options={{
+                  headerShown:false
+                }} 
+                name="Payment" 
+                component={Payment} 
               />
             </Stack.Navigator>
           </NavigationContainer>

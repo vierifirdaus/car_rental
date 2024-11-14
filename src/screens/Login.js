@@ -1,6 +1,6 @@
 //make login in jsx
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TextInput } from 'react-native-paper';
 import { configureFonts, MD3LightTheme } from 'react-native-paper';
@@ -9,6 +9,8 @@ import Button from '../components/Button';
 import axios from 'axios'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { postLogin, selectUser } from '../redux/reducers/user';
+import ModalPopup from '../components/ModalPopup';
+import Icon from 'react-native-vector-icons/Feather';
 
 // Login Screen Component
 export default function Login() {
@@ -47,6 +49,15 @@ export default function Login() {
   }, [navigation, user]);
   return (
     <View>
+      <ModalPopup visible={user.status === 'loading'}>
+        <View style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <ActivityIndicator />
+        </View>
+      </ModalPopup>
       <View style={styles.imageWrapper}>
         <Image source={require('../assets/picture/ToyotaLogo.png')} />
         <TouchableOpacity onPress={() => navigation.navigate('HomeTabs')}>
