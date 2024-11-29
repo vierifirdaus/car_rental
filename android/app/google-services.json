@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "898648684924",
+    "project_id": "car-rental-7f1af",
+    "storage_bucket": "car-rental-7f1af.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898648684924:android:f2dea851f0826085dcccf9",
+        "android_client_info": {
+          "package_name": "com.car_rental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "898648684924-nqprvrp79d0sicgggjd381fgevvgcooj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.car_rental",
+            "certificate_hash": "ed5f9e92e11227e13a80b8c0ea7ab05d4fc8ebde"
+          }
+        },
+        {
+          "client_id": "898648684924-1mdu12hoemiqs5v0u636kgql2b9ebvk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAriDy80VE5X2iHFONn-HS6IOvfIqv8xBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "898648684924-1mdu12hoemiqs5v0u636kgql2b9ebvk2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
